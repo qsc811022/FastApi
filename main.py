@@ -1,6 +1,6 @@
 #main.py
-from fastapi import FastAPI
-import schemas;
+from fastapi import FastAPI, Body
+import schemas
 
 app = FastAPI()
 fakeDatabase = {
@@ -19,7 +19,21 @@ def getItems(id:int):
 
 
 @app.post("/")
-def addItems(task:schemas.Item):
-    newId = len(fakeDatabase.keys())+1
-    fakeDatabase[newId] = {"task":task}
+def addItem(item:schemas.Item):
+    newId = len(fakeDatabase.keys()) + 1
+    fakeDatabase[newId] = {"task":item.task}
+    return fakeDatabase
+
+
+
+@app.put("/{id}")
+def updateItems(id:int, item:schemas.Item):
+    fakeDatabase[id]['task'] = item.task
+    return fakeDatabase
+
+
+
+@app.delete("/{id}")
+def deleteItems(id:int):
+    del fakeDatabase[id]
     return fakeDatabase
