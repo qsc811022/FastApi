@@ -1,4 +1,5 @@
-from flask_sqlalchemy import Column, Integer, String,SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+import Column, Integer, String
 from database import Base
 class Item(Base):
     __tablename__ = 'items'
