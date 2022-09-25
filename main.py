@@ -1,7 +1,6 @@
-#main.py
-from fastapi import FastAPI, Body
+# uvicorn main:app --reload
+from fastapi import FastAPI, Body,Depends
 import schemas
-
 app = FastAPI()
 fakeDatabase = {
     1:{'task':'Clean car'},
@@ -9,31 +8,33 @@ fakeDatabase = {
     3:{'task':'Start stream'},
 }
 
-@app.get("/")
-def getItems():
-    return fakeDatabase
+# @app.get("/")
+# def getItems():
+#     return fakeDatabase
 
 @app.get("/{id}")
-def getItems(id:int):
+def getItem(id:int):
     return fakeDatabase[id]
 
+@app.get("/{id}")
+def getItem(id:int):
+    return fakeDatabase[id]
 
 @app.post("/")
-def addItem(item:schemas.Item):
-    newId = len(fakeDatabase.keys()) + 1
-    fakeDatabase[newId] = {"task":item.task}
-    return fakeDatabase
+def addItem(body = Body()):
+   newId = len(fakeDatabase.keys()) + 1
+   fakeDatabase[newId] = {"task":body['task']}
+   return fakeDatabase
 
 
 
 @app.put("/{id}")
-def updateItems(id:int, item:schemas.Item):
-    fakeDatabase[id]['task'] = item.task
+def updateItem(id:int, item:schemas.Item):
+    fakeDatabase[id]['task'] = item.task 
     return fakeDatabase
 
 
-
 @app.delete("/{id}")
-def deleteItems(id:int):
+def deleteItem(id:int):
     del fakeDatabase[id]
     return fakeDatabase
